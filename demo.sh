@@ -11,7 +11,7 @@ dt_start=$( date +"%s%3N" )
 
 mkdir -p $LOG
 
-### preprocess datas
+### preprocess datas by spm
 uv run spm_train \
     --input=$DATA/orig/kyoto-train.$SRC,$DATA/orig/kyoto-train.$TGT \
     --model_prefix=$DATA/spm --vocab_size=32000 --character_coverage=0.9995 --model_type=bpe | tee ${LOG}/${CURRENT_TIME}_spm_train.log 2>&1
@@ -27,9 +27,9 @@ done
 
 uv run fairseq-preprocess \
     --source-lang $SRC --target-lang $TGT \
-    --trainpref $DATA/spm_tok/kyoto-train \
-    --validpref $DATA/spm_tok/kyoto-dev \
-    --testpref $DATA/spm_tok/kyoto-test \
+    --trainpref $DATA/spm_tok/kyoto-train.spm \
+    --validpref $DATA/spm_tok/kyoto-dev.spm \
+    --testpref $DATA/spm_tok/kyoto-test.spm \
     --destdir $DATABIN \
     --workers 4 | tee ${LOG}/${CURRENT_TIME}_preprocess.log 2>&1
 
@@ -52,8 +52,10 @@ uv run fairseq-train $DATABIN \
 uv run fairseq-generate $DATABIN \
     --path ${MODEL_SAVE}/${ARCH}_${SRC}_${TGT}/checkpoint_best.pt \
     --beam 5 --source-lang $SRC --target-lang $TGT \
-    --gen-subset test \
-    --output $DATA/test-output.txt | tee ${LOG}/${CURRENT_TIME}_generate.log 2>&1
+    --gen-subset test > $DATA/test-output
+
+cat $DATA/test-output | grep -P "^H" |sort -V |cut -f 3- | sed 's/\[en_XX\]//g' > $DATA/test-output.pred
+cat $DATA/test-output | grep -P "^T" |sort -V |cut -f 2- | sed 's/\[en_XX\]//g' > $DATA/test-output.ref
 
 dt_end=$( date +"%s%3N" )
 elapsed=$(( dt_end - dt_start ))

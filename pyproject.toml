@@ -10,6 +10,7 @@ dependencies = [
     "torchvision==0.13.1+cu113",
     "numpy==1.26.4",
     "sentencepiece>=0.2.0",
+    "tensorboardx>=2.6.2.2",
 ]
 
 [tool.uv]
