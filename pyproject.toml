@@ -1,0 +1,22 @@
+[project]
+name = "fairseq-tmp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fairseq",
+    "torch==1.12.1+cu113",
+    "torchvision==0.13.1+cu113",
+    "numpy==1.26.4",
+    "sentencepiece>=0.2.0",
+]
+
+[tool.uv]
+find-links = [
+    "https://download.pytorch.org/whl/cu113/torch",
+    "https://download.pytorch.org/whl/cu113/torchvision",
+]
+
+[tool.uv.sources]
+fairseq = { path = "fairseq", editable = true }
