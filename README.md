@@ -12,3 +12,8 @@ git clone https://github.com/pytorch/fairseq
   - 187     "torch>=1.13",  ->  "torch>=1.11",
 
 その後 uv sync
+
+### その他
+demoをkfttに対応するように作成しているので、内部のパスは変更してください。
+
+train以降は何も変更せずに動作するかと思われます。

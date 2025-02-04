@@ -370,7 +370,7 @@ requires-dist = [
     { name = "fairseq", editable = "fairseq" },
     { name = "numpy", specifier = "==1.26.4" },
     { name = "sentencepiece", specifier = ">=0.2.0" },
-    { name = "tensorboardx" },
+    { name = "tensorboardx", specifier = ">=2.6.2.2" },
     { name = "torch", specifier = "==1.12.1+cu113" },
     { name = "torchvision", specifier = "==0.13.1+cu113" },
 ]
